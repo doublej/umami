@@ -65,6 +65,7 @@ export const labels = defineMessages({
   editMember: { id: 'label.edit-member', defaultMessage: 'Edit member' },
   removeMember: { id: 'label.remove-member', defaultMessage: 'Remove member' },
   addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
+  change: { id: 'label.change', defaultMessage: 'Change' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },

@@ -9,7 +9,7 @@ import {
   SidebarProps,
   ThemeButton,
 } from '@umami/react-zen';
-import { Globe, LinkIcon, Grid2x2, PanelLeft } from '@/components/icons';
+import { Globe, LinkIcon, Grid2x2, PanelLeft, LayoutDashboard } from '@/components/icons';
 import { Logo } from '@/components/svg';
 import { useMessages, useNavigation, useGlobalState } from '@/components/hooks';
 import { NavButton } from '@/components/input/NavButton';
@@ -24,6 +24,12 @@ export function SideNav(props: SidebarProps) {
   const hasNav = !!(websiteId || pathname.startsWith('/admin') || pathname.includes('/settings'));
 
   const links = [
+    {
+      id: 'dashboard',
+      label: formatMessage(labels.dashboard),
+      path: '/dashboard',
+      icon: <LayoutDashboard />,
+    },
     {
       id: 'websites',
       label: formatMessage(labels.websites),
