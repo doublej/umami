@@ -66,10 +66,11 @@ export function DashboardPage() {
   return (
     <PageBody>
       <Column gap margin="2">
-        <Row justifyContent="space-between" alignItems="center" wrap="wrap" gap>
-          <PageHeader title={formatMessage(labels.dashboard)} />
-          <WebsiteDateFilter websiteId={data?.sites[0]?.website?.id} showAllTime={false} />
-        </Row>
+        <PageHeader title={formatMessage(labels.dashboard)}>
+          <Row alignItems="center" gap>
+            <WebsiteDateFilter websiteId={data?.sites[0]?.website?.id} showAllTime={false} />
+          </Row>
+        </PageHeader>
         <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="136px">
           <Column gap>
             <MetricsBar>

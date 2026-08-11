@@ -1,4 +1,4 @@
-import { Column, Row } from '@umami/react-zen';
+import { Column, Grid, Row } from '@umami/react-zen';
 import { WebsiteFilterButton } from '@/components/input/WebsiteFilterButton';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { FilterBar } from '@/components/input/FilterBar';
@@ -20,12 +20,16 @@ export function LinkControls({
 }) {
   return (
     <Column gap>
-      <Row alignItems="center" justifyContent="space-between" gap="3">
-        {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
-        {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} showAllTime={false} />}
-        {allowDownload && <ExportButton websiteId={websiteId} />}
-        {allowMonthFilter && <MonthFilter />}
-      </Row>
+      <Grid columns={{ xs: '1fr', md: 'auto 1fr' }} gap>
+        <Row alignItems="center" justifyContent="flex-start">
+          {allowFilter ? <WebsiteFilterButton websiteId={websiteId} /> : <div />}
+        </Row>
+        <Row alignItems="center" justifyContent={{ xs: 'flex-start', md: 'flex-end' }} gap>
+          {allowDateFilter && <WebsiteDateFilter websiteId={websiteId} showAllTime={false} />}
+          {allowDownload && <ExportButton websiteId={websiteId} />}
+          {allowMonthFilter && <MonthFilter />}
+        </Row>
+      </Grid>
       {allowFilter && <FilterBar websiteId={websiteId} />}
     </Column>
   );
