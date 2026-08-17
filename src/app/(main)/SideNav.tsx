@@ -16,6 +16,7 @@ import Link from '@/components/common/Link';
 import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
+  Gauge,
   Globe,
   Grid2x2,
   LayoutDashboard,
@@ -32,6 +33,12 @@ export function SideNav(props: any) {
   const [isCollapsed] = useGlobalState('sidenav-collapsed', false);
 
   const links = [
+    {
+      id: 'overview',
+      label: t(labels.overview),
+      path: '/overview',
+      icon: <Gauge />,
+    },
     ...(!teamId
       ? [
           {
