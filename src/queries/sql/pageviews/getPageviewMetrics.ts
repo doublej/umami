@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS, HOST_PATH_TYPES, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -62,7 +62,8 @@ async function relationalQuery(
         select distinct on (visit_id)
           visit_id,
           url_path,
-          url_query
+          url_query,
+          hostname
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
@@ -75,10 +76,14 @@ async function relationalQuery(
     column = `x.${FILTER_COLUMNS[type] || type}`;
   }
 
-  const selectColumn =
+  const pathColumn =
     type === 'fullPath'
       ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
       : column;
+  const hostColumn = type === 'entry' || type === 'exit' ? 'x.hostname' : 'website_event.hostname';
+  const selectColumn = HOST_PATH_TYPES.includes(type)
+    ? `coalesce(${hostColumn}, '') || ${pathColumn}`
+    : pathColumn;
 
   return rawQuery(
     `

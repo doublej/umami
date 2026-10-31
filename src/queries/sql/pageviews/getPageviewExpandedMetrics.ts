@@ -3,6 +3,7 @@ import {
   EVENT_TYPE,
   FILTER_COLUMNS,
   GROUPED_DOMAINS,
+  HOST_PATH_TYPES,
   SESSION_COLUMNS,
 } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
@@ -85,15 +86,14 @@ async function relationalQuery(
     `;
   }
 
-  const selectColumn =
+  const pathColumn =
     type === 'fullPath'
       ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
       : column;
-
-  const groupByColumn =
-    type === 'fullPath'
-      ? `case when website_event.url_query != '' then website_event.url_path || '?' || website_event.url_query else website_event.url_path end`
-      : column;
+  const selectColumn = HOST_PATH_TYPES.includes(type)
+    ? `coalesce(website_event.hostname, '') || ${pathColumn}`
+    : pathColumn;
+  const groupByColumn = selectColumn;
   const bounceQuery = needsBounceEvents
     ? `sum(case when t.c = 1 and coalesce(e.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`
     : '0 as "bounces",';

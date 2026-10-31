@@ -73,6 +73,9 @@ export const SEGMENT_TYPES = {
   cohort: 'cohort',
 };
 
+// Fork: these metrics return hostname + path, because one website can span many subdomains.
+export const HOST_PATH_TYPES = ['path', 'entry', 'exit', 'fullPath'];
+
 export const FILTER_COLUMNS = {
   path: 'url_path',
   entry: 'url_path',

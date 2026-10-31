@@ -50,3 +50,14 @@ test('decodePunycodeDomain', () => {
   expect(format.decodePunycodeDomain('example.com')).toBe('example.com');
   expect(format.decodePunycodeDomain(undefined)).toBeUndefined();
 });
+
+test('splitHostPath', () => {
+  expect(format.splitHostPath('films.jurrejan.com/web/#/search')).toEqual({
+    host: 'films.jurrejan.com',
+    path: '/web/#/search',
+  });
+  expect(format.splitHostPath('/riffle/')).toEqual({ host: '', path: '/riffle/' });
+  expect(format.splitHostPath('')).toEqual({ host: '', path: '' });
+  expect(format.splitHostPath(null)).toEqual({ host: '', path: '' });
+  expect(format.splitHostPath('no-slash')).toEqual({ host: '', path: 'no-slash' });
+});

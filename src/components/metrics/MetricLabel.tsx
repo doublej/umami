@@ -10,7 +10,7 @@ import {
   useRegionNames,
 } from '@/components/hooks';
 import { GROUPED_DOMAINS } from '@/lib/constants';
-import { decodePunycodeDomain } from '@/lib/format';
+import { decodePunycodeDomain, splitHostPath } from '@/lib/format';
 
 export interface MetricLabelProps {
   type: string;
@@ -83,17 +83,19 @@ export function MetricLabel({ type, data }: MetricLabelProps) {
 
     case 'path':
     case 'entry':
-    case 'exit':
+    case 'exit': {
+      // Fork: label is hostname + path; the filter still matches on the path alone.
+      const { host, path } = splitHostPath(label);
+      const site = host || domain;
       return (
         <FilterLink
           type={type === 'entry' || type === 'exit' ? 'path' : type}
-          value={label}
-          label={!label && t(labels.none)}
-          externalUrl={
-            domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null
-          }
+          value={path}
+          label={label || t(labels.none)}
+          externalUrl={site ? `${site.startsWith('http') ? site : `https://${site}`}${path}` : null}
         />
       );
+    }
 
     case 'fullPath':
       return label || `(${t(labels.none)})`;

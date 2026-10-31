@@ -138,3 +138,14 @@ export function truncateString<T extends string | null | undefined>(
 ): T extends string ? string : T {
   return (value ? value.substring(0, maxLength) : value) as T extends string ? string : T;
 }
+
+// Fork: path metrics return hostname + path ("films.jurrejan.com/web/"); plain paths pass through.
+export function splitHostPath(label?: string | null) {
+  const slash = label ? label.indexOf('/') : -1;
+
+  if (slash <= 0) {
+    return { host: '', path: label || '' };
+  }
+
+  return { host: label.slice(0, slash), path: label.slice(slash) };
+}
